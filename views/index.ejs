@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+  </head>
+  <body>
+    <div id="loader"></div>
+    <div id="container">
+      <h1>Mỗi lần được nhận 1000 token</h1>
+      <select id="networks">
+        <% for (var i =0; i <networks.length; i++ ) { %>
+        <option><%= networks[i] %></option>
+        <% } %>
+      </select>
+      <select id="tokens">
+        <% for (var i =0; i <data.length; i++ ) { %>
+        <option><%= data[i] %></option>
+        <% } %>
+      </select>
+      <input type="text" id="address">
+      <button type="button" id="btn-faucet" onclick="faucet()">Faucet</button>
+    </div>
+  </body>
+  <script>
+    async function faucet() {
+      const token = document.getElementById("tokens").value
+      const address = document.getElementById("address").value
+      const network = document.getElementById("networks").value
+      const res = await postData("/sendToken", {token, address, network})
+      alert(res.msg)
+    }
+
+    async function postData(url = '', data) {
+      const response = await fetch(url, {
+        method: 'POST', 
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data) 
+      });
+      return response.json(); 
+    }
+  </script>
+</html>
